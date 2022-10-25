@@ -1,0 +1,7 @@
+.Rproj.user
+.Rbuildignore
+.Rhistory
+.git
+test_data/*
+app_dev.R
+sonomaDashboardUI.Rproj

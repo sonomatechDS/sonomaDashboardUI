@@ -1,0 +1,45 @@
+Package: sonomaDashboardUI
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Cari",
+           family = "Gostic",
+           role = c("aut", "cre"),
+           email = "cgostic@sonomatech.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
+Respository: sonomaCRAN
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    assertthat,
+    fs,
+    ggplot2,
+    rstudioapi,
+    scales,
+    styler,
+    DT,
+    dplyr,
+    htmltools,
+    leaflet,
+    magrittr,
+    purrr,
+    shiny,
+    shinycssloaders,
+    shinydashboard,
+    tidyquant,
+    gghighlight,
+    janitor,
+    tidyr,
+    grid,
+    viridis,
+    openair,
+    utils,
+    stringr,
+    shinyWidgets,
+    rlang,
+    shinyjs,
+    lubridate
