@@ -4,22 +4,22 @@
 # The last matching rule always wins; those that appear lower in the file take precedence over rules that appear higher up.
 # Specify owners by their username, email, or role assignment in the project.
 
-DESCRIPTION sonomatechDS
+DESCRIPTION @sonomatechDS
 
-NAMESPACE sonomatechDS
+NAMESPACE @sonomatechDS
 
-LICENSE sonomatechDS
+LICENSE @sonomatechDS
 
-README.md sonomatechDS
+README.md @sonomatechDS
 
-www/.* sonomatechDS
+www/.* @sonomatechDS
 
-img/.* sonomatechDS
+img/.* @sonomatechDS
 
-man/* sonomatechDS
+man/* @sonomatechDS
 
-R/* sonomatechDS
+R/* @sonomatechDS
 
-doc/* sonomatechDS
+doc/* @sonomatechDS
 
-.github/CODEOWNERS
+.github/CODEOWNERS @sonomatechDS
