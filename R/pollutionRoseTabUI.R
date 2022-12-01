@@ -225,7 +225,15 @@ pollutionRoseTabUI <- function(id,
     htmltools::div(style='padding-top:15px',
     shiny::tagAppendChildren(tl,
     pr_plots,
-    list(htmltools::div(style = 'padding-top: 20px; padding-bottom:30px;',
+    list(
+      htmltools::div(shiny::fluidRow(
+        column(10, offset = 1, align = 'center',
+               htmltools::div(style = 'border-sytle: solid; border-color: black; padding:10px; background-color: #E8E8E8; font-size: 18px; margin-top: 10px;',
+                              shiny::htmlOutput(ns('windAvailabilityNotice'))
+               )
+        ),
+      )),
+      htmltools::div(style = 'padding-top: 20px; padding-bottom:30px;',
     sitemapUI(ns('PRSitemap'))))
     ))
     # )

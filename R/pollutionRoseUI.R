@@ -7,12 +7,20 @@
 #' @return
 #' @importFrom shiny NS plotOutput
 #' @importFrom shinycssloaders withSpinner
+#' @importFrom htmltools tags
 #' @export
 #'
 #' @examples
 pollutionRoseUI <- function(id) {
   ns <- shiny::NS(id)
-
+  
+  # htmltools::tags$head(
+  #   htmltools::tags$style(HTML("
+  #                              shiny-output-error-myClass {
+  #                               color: green;
+  #                              }"))
+  #   )
+  
   shiny::plotOutput(ns("PollutionRose"),
                     height = "550px") %>% shinycssloaders::withSpinner()
 }
