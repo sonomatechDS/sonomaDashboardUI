@@ -1,0 +1,25 @@
+# Each line represents a rule, followed by a list of members.
+# These members are the default owners for all files that match the specified pattern.
+# The pattern generally follows the same syntax used for .gitignore files.
+# The last matching rule always wins; those that appear lower in the file take precedence over rules that appear higher up.
+# Specify owners by their username, email, or role assignment in the project.
+
+DESCRIPTION @sonomatechDS
+
+NAMESPACE @sonomatechDS
+
+LICENSE @sonomatechDS
+
+README.md @sonomatechDS
+
+www/.* @sonomatechDS
+
+img/.* @sonomatechDS
+
+man/* @sonomatechDS
+
+R/* @sonomatechDS
+
+doc/* @sonomatechDS
+
+.github/CODEOWNERS @sonomatechDS
