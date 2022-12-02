@@ -12,7 +12,7 @@
 #'
 #' @return
 #' @importFrom shiny NS tagList fluidRow column plotOutput checkboxInput
-#' @importFrom htmltools h4 div
+#' @importFrom htmltools h4 div h2
 #' @importFrom shinycssloaders withSpinner
 #' @export
 #'
@@ -65,6 +65,6 @@ scatterUI <- function(id,
                   shiny::plotOutput(ns("Scatter"), height = '500px') %>% shinycssloaders::withSpinner()),
                   boxes)),
                  htmltools::div(id = ns('sameParams'),
-                                h2(style = 'text-align:center',
+                                htmltools::h2(style = 'text-align:center',
                                    'Select two different parameter/poc combinations to display scatterplot.')))
 }

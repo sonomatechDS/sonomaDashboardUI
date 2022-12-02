@@ -40,7 +40,7 @@
 #' @importFrom ggplot2 geom_point ggplot aes labs
 #' @importFrom dplyr select filter full_join mutate
 #' @importFrom tidyr spread
-#' @importFrom stats as.formula
+#' @importFrom stats as.formula lm coef
 #' @export
 #'
 #' @examples
@@ -230,10 +230,10 @@ scatterServer <- function(id,
 
 
             lm_eqn <- function(df){
-              m <- lm(stats::as.formula(paste(param2_val, '~', param1_val)), data = df)
+              m <- stats::lm(stats::as.formula(paste(param2_val, '~', param1_val)), data = df)
               eq <- substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2,
-                               list(a = format(unname(coef(m)[1]), digits = 2),
-                                    b = format(unname(coef(m)[2]), digits = 2),
+                               list(a = format(unname(stats::coef(m)[1]), digits = 2),
+                                    b = format(unname(stats::coef(m)[2]), digits = 2),
                                     r2 = format(summary(m)$r.squared, digits = 3)))
               as.character(as.expression(eq));
             }

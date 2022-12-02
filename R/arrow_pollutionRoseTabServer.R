@@ -47,6 +47,9 @@
 #'                                 at the max and min concentration value.
 #' @param breaks_aqi_1 vector Manual scale breaks for AQI designations for first
 #'                            parameter.
+#' @param param2 string Name of optional 2nd pollutant parameter
+#' @param param3 string Name of optional 3rd pollutant parameter
+#' @param param4 string Name of optional 4th pollutant parameter
 #' @param breaks_conc_2 (optional) Manual scale breaks in legend for optional second
 #'                                 parameter. If not specified, sequence of
 #'                                 6 equal breaks will be created with endpoints
@@ -74,8 +77,8 @@
 #'                   - aqipalette$maroonHazardous
 #'
 #' @return
-#' @importFrom shiny moduleServer reactive renderPlot reactiveValues observeEvent req validate need
-#' @importFrom dplyr filter sym pull collect
+#' @importFrom shiny moduleServer reactive renderPlot reactiveValues observeEvent req validate need renderText
+#' @importFrom dplyr filter sym pull collect rename
 #' @importFrom magrittr `%>%`
 #' @importFrom assertthat assert_that
 #' @importFrom viridis magma
@@ -114,11 +117,8 @@ arrow_pollutionRoseTabServer <- function(id,
                                 year_filter = TRUE,
                                 year_col = NULL,
                                 season_filter = TRUE,
-                                season_col = NULL,
                                 dow_filter = FALSE,
-                                dow_col = NULL,
                                 hour_filter = FALSE,
-                                hour_col = NULL,
                                 breaks_conc_1 = NULL,
                                 breaks_conc_2 = NULL,
                                 breaks_aqi_2 = NULL,

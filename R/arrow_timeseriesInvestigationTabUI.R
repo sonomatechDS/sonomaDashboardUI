@@ -6,16 +6,12 @@
 #' functions scatterServer(), timeseriesServer() and pollutionRoseServer().
 #'
 #' @param id string ID the connects timeseriesInvestigationTabUI() to timeseriesInvestigationTabServer()
-#' @param duration_options vector The durations that should be avilable for the second
-#'                          parameter. A subset of '1Hr', '24Hr' and '8Hr'. Default
-#'                          is c('1Hr', '24Hr').
 #'
 #' @return
 #' @importFrom shiny NS fluidRow column tagList selectInput radioButtons conditionalPanel textOutput
 #' @importFrom htmltools div
 #' @importFrom shinyjs useShinyjs
 #' @importFrom stringr str_extract
-#' @importFrom glue glue
 #' @export
 #'
 #' @examples

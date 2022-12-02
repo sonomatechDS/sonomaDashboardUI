@@ -76,7 +76,7 @@
 #' @return
 #' @importFrom shiny moduleServer reactive renderPlot renderTable
 #' @importFrom ggplot2 ggplot geom_segment geom_point geom_hline annotate aes labs theme scale_size scale_shape_manual arrow unit
-#' @importFrom dplyr filter mutate distinct select arrange
+#' @importFrom dplyr filter mutate distinct select arrange across
 #' @importFrom stats setNames
 #' @importFrom magrittr `%>%`
 #' @export
@@ -320,8 +320,8 @@ networkCompletenessServer <- function(id,
 
               if (!is.null(subset_graph_col)) {
                 data_select <- data_select %>%
-                  mutate(across(!(!!sym(subset_graph_col)), as.character)) %>%
-                  mutate(across(!(!!sym(subset_graph_col)), ~ case_when(!(!!sym(subset_graph_col)) ~ paste0("<em>",.,"</em>"), TRUE ~ .)))
+                  mutate(dplyr::across(!(!!sym(subset_graph_col)), as.character)) %>%
+                  mutate(dplyr::across(!(!!sym(subset_graph_col)), ~ case_when(!(!!sym(subset_graph_col)) ~ paste0("<em>",.,"</em>"), TRUE ~ .)))
 
                 html_cap <- "<em>Italicized rows represent collocated measurements not displayed in the plot.</em>"
               } else {

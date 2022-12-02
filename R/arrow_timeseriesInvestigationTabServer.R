@@ -24,8 +24,8 @@
 #' @param pointsize numeric (Optional) size of point on timeseries, default = 3.
 #'
 #' @return
-#' @importFrom shiny moduleServer observeEvent updateSelectInput reactive req updateRadioButtons HTML
-#' @importFrom dplyr filter pull sym collect
+#' @importFrom shiny moduleServer observeEvent updateSelectInput reactive req updateRadioButtons HTML renderText
+#' @importFrom dplyr filter pull sym collect rename
 #' @importFrom tidyr unite
 #' @importFrom magrittr `%>%`
 #' @importFrom shinyjs showElement hideElement
@@ -281,10 +281,10 @@ arrow_timeseriesInvestigationTabServer <- function(id,
           f3 <- wd_param_name
 
           wind_1_data <- ds %>%
-            filter(aqs_sitecode == f1,
-                   sample_duration ==f2,
-                   parameter == f3) %>%
-            select(aqs_sitecode, sample_measurement, !!dplyr::sym(dt_col)) %>%
+            filter(!!dplyr::sym(site_col) == f1,
+                   !!sym(sampledur_col) ==f2,
+                   !!sym(param_col) == f3) %>%
+            select(!!sym(site_col), !!sym(measurement_col), !!dplyr::sym(dt_col)) %>%
             collect() %>%
             rename(!!sym(wd_param_name) := measurement_col)
         } else {
@@ -303,10 +303,10 @@ arrow_timeseriesInvestigationTabServer <- function(id,
           f3 <- wd_param_name
           
           wind_2_data <- ds %>%
-            filter(aqs_sitecode == f1,
-                   sample_duration ==f2,
-                   parameter == f3) %>%
-            select(aqs_sitecode, sample_measurement, !!dplyr::sym(dt_col)) %>%
+            filter(!!sym(site_col) == f1,
+                   !!sym(sampledur_col) ==f2,
+                   !!sym(param_col) == f3) %>%
+            select(!!sym(site_col), !!sym(measurement_col), !!dplyr::sym(dt_col)) %>%
             collect() %>%
             rename(!!sym(wd_param_name) := measurement_col)
         } else {
