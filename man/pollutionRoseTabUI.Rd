@@ -33,9 +33,6 @@ concentrations or AQI index.}
 
 \item{num_plots}{integer Number of plots to show on the PR tab. Maximum of 4.}
 }
-\value{
-
-}
 \description{
 Used alongside pollutionRoseTabUI() to add a collection of reactive
 elements to an app, including multiselects for seasons and years, a select

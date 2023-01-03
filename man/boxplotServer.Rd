@@ -77,9 +77,6 @@ If multiple elements are to be added, must be
 a vector (e.g. c(ylim(0,4),
 hline(y_intercept = 0, color = 'red))).}
 }
-\value{
-
-}
 \description{
 Use alongside boxplotUI() to add boxplot to app.
 Upper box boundary is 75th percentile, lower boundary is 25th percentile.

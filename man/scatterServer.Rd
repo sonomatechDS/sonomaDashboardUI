@@ -15,7 +15,9 @@ scatterServer(
   poc_col,
   param_rct,
   sec_param_rct,
-  brush = shiny::reactive({     NULL }),
+  brush = shiny::reactive({
+     NULL
+ }),
   legend_pos = c(0, 1)
 )
 }
@@ -56,9 +58,6 @@ ymin, ymax.}
 \item{legend_pos}{numeric vector (optional) Default = c(1,0), offset from
 upper-left corner that legend should be
 positioned in.}
-}
-\value{
-
 }
 \description{
 Used alongside scatterUI() to add a scatter plot to app. Takes in a

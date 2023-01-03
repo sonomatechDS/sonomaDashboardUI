@@ -15,9 +15,6 @@ ending with '.R' file suffix)}
 \item{save_and_close}{boolean If TRUE, saves and closes file (default). If FALSE,
 file remains open in RStudio.}
 }
-\value{
-
-}
 \description{
 Adapted from source: https://community.rstudio.com/t/using-rstudioapi-to-create-a-new-file-and-insert-text/41549/3
 }

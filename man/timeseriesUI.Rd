@@ -9,9 +9,6 @@ timeseriesUI(id)
 \arguments{
 \item{id}{string ID label that links timeseriesUI() to timeseriesServer()}
 }
-\value{
-
-}
 \description{
 Used alongside timeseriesServer() to add a timeseries of 1hr and optionally 24hr
 data (wrapped in a fluidRow) to an app. Timeseries will include zoom

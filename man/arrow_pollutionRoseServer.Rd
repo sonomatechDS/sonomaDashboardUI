@@ -15,7 +15,9 @@ arrow_pollutionRoseServer(
   unit_col,
   site_col,
   param_rct,
-  brush = reactive({     NULL }),
+  brush = reactive({
+     NULL
+ }),
   title = NULL
 )
 }
@@ -58,9 +60,6 @@ are each vectors with x/y min and x/y max values
 respectively (e.g. list(x=c(0,10), y=c(-10,10)))}
 
 \item{title}{(optional) string Title for plot. If not specified, title will be current value of param_rct.}
-}
-\value{
-
 }
 \description{
 Pollution Rose Server

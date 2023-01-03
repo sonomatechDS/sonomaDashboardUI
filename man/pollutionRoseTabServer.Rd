@@ -20,10 +20,18 @@ pollutionRoseTabServer(
   unit_str_2 = NULL,
   unit_str_3 = NULL,
   unit_str_4 = NULL,
-  title_1 = shiny::reactive({     "PM[2.5]" }),
-  title_2 = shiny::reactive({     "O[3]" }),
-  title_3 = shiny::reactive({     "Fill title_3!" }),
-  title_4 = shiny::reactive({     "Fill title_4!" }),
+  title_1 = shiny::reactive({
+     "PM[2.5]"
+ }),
+  title_2 = shiny::reactive({
+     "O[3]"
+ }),
+  title_3 = shiny::reactive({
+     "Fill title_3!"
+ }),
+  title_4 = shiny::reactive({
+     "Fill title_4!"
+ }),
   year_filter = TRUE,
   year_col = NULL,
   season_filter = TRUE,
@@ -154,9 +162,6 @@ optional second parameter.}
 - aqipalette$redUnhealthy,
 - aqipalette$purpleVeryUnhealthy,
 - aqipalette$maroonHazardous}
-}
-\value{
-
 }
 \description{
 Used alongside pollutionRoseTabUI() to add a collection of reactive

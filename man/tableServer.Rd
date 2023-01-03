@@ -12,12 +12,18 @@ tableServer(
   col_label_names = NULL,
   arrange_col = NULL,
   filter_col = NULL,
-  filter_rct = shiny::reactive({     list(NULL) }),
+  filter_rct = shiny::reactive({
+     list(NULL)
+ }),
   color_col = NULL,
   color_order = NULL,
-  caption_rct = reactive({     NULL }),
+  caption_rct = reactive({
+     NULL
+ }),
   pdf_button = TRUE,
-  cb = shiny::reactive({     NULL }),
+  cb = shiny::reactive({
+     NULL
+ }),
   load_all_data = TRUE,
   download_filename = "data",
   dom_spec = "Bfrtip"
@@ -82,9 +88,6 @@ desired for downloaded table data.}
 
 \item{dom_spec}{sting (optional) Default = 'Bfrtip', establishes built-in
 table control elements. https://datatables.net/reference/option/dom}
-}
-\value{
-
 }
 \description{
 Data Table Server Function

@@ -11,10 +11,14 @@ sitemapServer(
   color_col = NULL,
   color_order = NULL,
   label_col,
-  cb = reactive({     NULL }),
+  cb = reactive({
+     NULL
+ }),
   click_buffer = 0.003,
   add_polygon = FALSE,
-  polygon_df = reactive({     NULL }),
+  polygon_df = reactive({
+     NULL
+ }),
   polygon_label_col = NULL,
   polygon_color = "navy",
   polygon_weight = 3

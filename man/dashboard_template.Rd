@@ -47,9 +47,6 @@ to use (default = sonoma_color_palette)}
 
 \item{PAL_a}{double (optional) An alpha value between 0 and 1 to set opacity (default = 1)}
 }
-\value{
-
-}
 \description{
 Code template will be written according to specifications below into
 a file and opened in RStudio.

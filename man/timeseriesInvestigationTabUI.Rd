@@ -13,9 +13,6 @@ timeseriesInvestigationTabUI(id, duration_options = c("1 HOUR", "24 HOUR"))
 parameter. A subset of '1Hr', '24Hr' and '8Hr'. Default
 is c('1Hr', '24Hr').}
 }
-\value{
-
-}
 \description{
 Used alongside timeseriesInvestigationTabServer() to add a collection of
 reactive elements to the app, including multiple parameter selections,

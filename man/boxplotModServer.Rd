@@ -75,9 +75,6 @@ not specified, no hline will be drawn.}
 \item{coord_flip}{(optional) If TRUE (defualt), coordinates are flipped (boxes are
 oriented horizontally).}
 }
-\value{
-
-}
 \description{
 Use alongside boxplotModUI() to add modified boxplot to app.
 Optional features include annotations, and an hline.

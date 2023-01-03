@@ -6,9 +6,6 @@
 \usage{
 theme_sonoma()
 }
-\value{
-
-}
 \description{
 Centered & bold title, 14 base font size, white background,
 major and minor gridlines, legend on right, black plot border

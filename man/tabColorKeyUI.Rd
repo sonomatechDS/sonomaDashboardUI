@@ -9,9 +9,6 @@ tabColorKeyUI(id)
 \arguments{
 \item{id}{string Links call to tabColorKeyUI to tabColorKeyServer function}
 }
-\value{
-
-}
 \description{
 Creates key for tab colors that updates depending on coloblind accessible
 selection.

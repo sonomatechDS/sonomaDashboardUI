@@ -9,9 +9,6 @@ detectionLimitsPlotUI(id)
 \arguments{
 \item{id}{string ID label that links detectionLimitsPlotUI() to detectionLimitsPlotServer()}
 }
-\value{
-
-}
 \description{
 Used alongside detectionLimitsPlotServer() to add a detection limits plot to app.
 Method labels are plotted according to MDL and \% of observations above the

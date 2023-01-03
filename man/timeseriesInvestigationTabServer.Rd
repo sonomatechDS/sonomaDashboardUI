@@ -76,9 +76,6 @@ of AQS sitecode.}
 
 \item{pointsize}{numeric (optional) Size of plotted points (default = 3) on TS}
 }
-\value{
-
-}
 \description{
 Used alongside timeseriesInvestigationTabUI() to add a collection of
 reactive elements to the app, including multiple parameter selections,

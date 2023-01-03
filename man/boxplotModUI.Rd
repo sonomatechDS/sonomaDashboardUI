@@ -9,9 +9,6 @@ boxplotModUI(id)
 \arguments{
 \item{id}{string ID label that links boxplotModUI() to boxplotModServer()}
 }
-\value{
-
-}
 \description{
 Use alongside boxplotModServer() to add modified boxplot to app.
 Modified boxplot allows user to specify extent of box limits and whisker

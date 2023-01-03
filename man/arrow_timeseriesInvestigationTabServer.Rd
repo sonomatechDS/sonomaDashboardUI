@@ -52,9 +52,6 @@ poc (with these column names)}
 
 \item{pointsize}{numeric (Optional) size of point on timeseries, default = 3.}
 }
-\value{
-
-}
 \description{
 Used alongside timeseriesInvestigationTabUI() to add a collection of
 reactive elements to the app, including multiple parameter selections,

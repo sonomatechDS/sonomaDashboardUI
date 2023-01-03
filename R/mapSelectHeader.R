@@ -5,6 +5,7 @@
 #' with a call to mapSelectHeaderUI specifying the same ID.
 #' e.g. output$header <- mapSelectHeader()
 #'
+#' @param id id used to link UI function to Server
 #' @param data_row reactive Row of data to be displayed, e.g. the $sitedata
 #'                          output of sitemapServer()
 #' @param select_cols character vector Columns to display in table

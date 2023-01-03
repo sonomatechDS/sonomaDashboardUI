@@ -13,9 +13,6 @@ networkCompletenessUI(id, add_brush = TRUE)
 rendered plot. This allows users to display details
 of selected data below the plot.}
 }
-\value{
-
-}
 \description{
 Used alongside networkCompletenessUI() to add a network completeness
 plot to app.

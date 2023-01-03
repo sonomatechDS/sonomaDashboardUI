@@ -23,13 +23,19 @@ lineplotServer(
   y_lab = "",
   color_lab = "",
   linetype_lab = "",
-  filter_rct = shiny::reactive({     NULL }),
-  filter2_rct = shiny::reactive({     NULL }),
+  filter_rct = shiny::reactive({
+     NULL
+ }),
+  filter2_rct = shiny::reactive({
+     NULL
+ }),
   filter_col = NULL,
   filter2_col = NULL,
   highlight = FALSE,
   highlight_col = "AQS_SITECODE",
-  highlight_value_rct = shiny::reactive({     NULL }),
+  highlight_value_rct = shiny::reactive({
+     NULL
+ }),
   x_numeric = TRUE,
   corner_ann = "Select site on map to highlight",
   plot_specs = NULL
@@ -106,9 +112,6 @@ when no highlight value is specified. Default is
 \item{plot_specs}{(optional) obj Additional GGplot elements to add to plot
 e.g. theme(axis.text.x = element_text(angle = 90)).
 Can be string of added elements.}
-}
-\value{
-
 }
 \description{
 Use alongside lineplotUI() to add lineplot of concentration data to app.

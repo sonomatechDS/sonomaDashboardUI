@@ -9,9 +9,6 @@ scale_color_sonoma(reverse = FALSE)
 \arguments{
 \item{reverse}{boolean If TRUE, reverses order of color palette}
 }
-\value{
-
-}
 \description{
 Color palette defined in sonoma_color_palettea(). Applies to 'color' aesthetic
 in ggplot object.

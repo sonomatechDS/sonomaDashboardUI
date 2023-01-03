@@ -4,10 +4,10 @@
 \alias{mapSelectHeaderUI}
 \title{Header table for selected map site}
 \usage{
-mapSelectHeaderUI(labelId)
+mapSelectHeaderUI(id)
 }
 \arguments{
-\item{labelId}{string ID to match with a call to output$<labelId> in the
+\item{id}{string ID to match with a call to output$\if{html}{\out{<labelId>}} in the
 server function of the app.}
 }
 \value{

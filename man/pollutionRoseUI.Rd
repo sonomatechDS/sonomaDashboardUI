@@ -9,9 +9,6 @@ pollutionRoseUI(id)
 \arguments{
 \item{id}{string ID used to link pollutionRoseUI() to pollutionRoseServer()}
 }
-\value{
-
-}
 \description{
 Used alongside pollutionRoseServer() to add a pollution rose with 1hr data to the app.
 }

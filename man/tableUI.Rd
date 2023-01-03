@@ -9,9 +9,6 @@ tableUI(id)
 \arguments{
 \item{id}{string ID label that links tablueUI() to tableServer()}
 }
-\value{
-
-}
 \description{
 Used alongside tableServer() to add a data table (wrapped in a fluidRow)
 to an app.

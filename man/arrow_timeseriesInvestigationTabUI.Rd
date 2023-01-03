@@ -9,9 +9,6 @@ arrow_timeseriesInvestigationTabUI(id)
 \arguments{
 \item{id}{string ID the connects timeseriesInvestigationTabUI() to timeseriesInvestigationTabServer()}
 }
-\value{
-
-}
 \description{
 Used alongside timeseriesInvestigationTabServer() to add a collection of
 reactive elements to the app, including multiple parameter selections,

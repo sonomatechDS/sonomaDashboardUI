@@ -18,7 +18,9 @@ detectionLimitsPlotServer(
   size_lab = NULL,
   title = "",
   filter_col = NULL,
-  filter_rct = shiny::reactive({     NULL })
+  filter_rct = shiny::reactive({
+     NULL
+ })
 )
 }
 \arguments{

@@ -11,9 +11,6 @@ footerDateofDataUpdateUI(dt_df)
 with the most recent date of data update per
 download cadence in the first row.}
 }
-\value{
-
-}
 \description{
 Paste at bottom of UI to add a note listing the most recent deployment date
 }

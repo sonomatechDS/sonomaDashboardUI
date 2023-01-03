@@ -4,9 +4,14 @@
 \alias{tabColorKeyServer}
 \title{Tab color key}
 \usage{
-tabColorKeyServer(id, n, labels, cb = reactive({
-    FALSE
-}))
+tabColorKeyServer(
+  id,
+  n,
+  labels,
+  cb = reactive({
+     FALSE
+ })
+)
 }
 \arguments{
 \item{id}{string ID to link server to UI}
@@ -16,9 +21,6 @@ tabColorKeyServer(id, n, labels, cb = reactive({
 \item{labels}{character vector Labels to give to each respective tab color}
 
 \item{cb}{boolean If T, colorblind accessible palette is used}
-}
-\value{
-
 }
 \description{
 Creates key for tab colors that updates depending on coloblind accessible

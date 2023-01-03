@@ -4,9 +4,11 @@
 \alias{mapSelectHeader}
 \title{Header table for selected map site}
 \usage{
-mapSelectHeader(data_row, select_cols, col_labels)
+mapSelectHeader(id, data_row, select_cols, col_labels)
 }
 \arguments{
+\item{id}{id used to link UI function to Server}
+
 \item{data_row}{reactive Row of data to be displayed, e.g. the $sitedata
 output of sitemapServer()}
 

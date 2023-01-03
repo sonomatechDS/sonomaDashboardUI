@@ -7,14 +7,20 @@
 timeseriesServer(
   id,
   data_param1_rct,
-  data_param2_rct = shiny::reactive({     NULL }),
+  data_param2_rct = shiny::reactive({
+     NULL
+ }),
   x,
   y,
   param_col,
   unit_col,
   param_rct,
-  sec_param_rct = shiny::reactive({     NULL }),
-  sec_duration_rct = shiny::reactive({     NULL }),
+  sec_param_rct = shiny::reactive({
+     NULL
+ }),
+  sec_duration_rct = shiny::reactive({
+     NULL
+ }),
   linesize = 0.5,
   pointsize = 3
 )

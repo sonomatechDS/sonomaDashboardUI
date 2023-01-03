@@ -9,9 +9,6 @@ boxplotUI(id)
 \arguments{
 \item{id}{string ID label that links boxplotUI() to boxplotServer()}
 }
-\value{
-
-}
 \description{
 Use alongside boxplotServer() to add boxplot to app.
 }

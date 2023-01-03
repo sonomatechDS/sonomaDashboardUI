@@ -17,9 +17,6 @@ to scatterplot.}
 adds checkbox to add one-to-one line
 to scatterplot.}
 }
-\value{
-
-}
 \description{
 Used alongside scatterServer() to add a scatter plot to app.
 }

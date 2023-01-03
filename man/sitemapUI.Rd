@@ -30,9 +30,6 @@ Should be length 2.}
 "Click a circle on the map to select a site". If no
 message desired, input an empty string.}
 }
-\value{
-
-}
 \description{
 Used alongside sitemapServer() to add a map of aqs sites (wrapped in a fluidRow)
 to an app. Map will include tooltip with aqs site code, and optionally a

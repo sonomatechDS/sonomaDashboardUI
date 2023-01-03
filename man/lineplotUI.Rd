@@ -9,9 +9,6 @@ lineplotUI(id)
 \arguments{
 \item{id}{string ID label that links lineplotUI() to lineplotServer()}
 }
-\value{
-
-}
 \description{
 Use alongside lineplotServer() to add lineplot of concentration data to app.
 }

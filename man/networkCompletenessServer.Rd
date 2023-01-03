@@ -20,14 +20,20 @@ networkCompletenessServer(
   table_col_labels = NULL,
   xlab = "Rank ordered site completeness",
   ylab = "Completeness (\%)",
-  title_rct = reactive({     NULL }),
+  title_rct = reactive({
+     NULL
+ }),
   hline_int = NA_real_,
   hline_ann = "",
   hline_color = "red",
   filter_col = NULL,
-  filter_rct = shiny::reactive({     NULL }),
+  filter_rct = shiny::reactive({
+     NULL
+ }),
   highlight_col = NULL,
-  highlight_rct = shiny::reactive({     NULL }),
+  highlight_rct = shiny::reactive({
+     NULL
+ }),
   dragbox_x_only = F,
   corner_ann = "",
   shape_values = NULL,
@@ -128,9 +134,6 @@ though all data values will appear in table that meet
 the brush specifications. e.g. Can be used to plot
 only the lowest POC at a site, while showing
 information on all POCs in the details table.}
-}
-\value{
-
 }
 \description{
 Used alongside networkCompletenessUI() to add a network completeness
