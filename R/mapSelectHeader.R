@@ -16,22 +16,27 @@
 #' @export
 #'
 #' @examples
-mapSelectHeader <- function(data_row,
+mapSelectHeader <- function(id,
+                            data_row,
                             select_cols,
                             col_labels) {
+  shiny::moduleServer(id, {
+    function(input, output, session) {
 
-  callback <- "$('table.dataTable.display tbody tr:odd').css('background-color', '#F8F8F8');"
+      req(data_row())
 
-  t <- DT::renderDataTable({
+      callback <- "$('table.dataTable.display tbody tr:odd').css('background-color', '#F8F8F8');"
 
-    data_row() %>%
-      dplyr::select(select_cols) %>%
-      DT::datatable(options = list(dom='t',
-                                   ordering=F),
-                    colnames = col_labels,
-                    rownames=FALSE,
-                    class = list(stripe = FALSE),
-                    callback = DT::JS(callback))})
 
-  return(t)
+      output$mapHeaderTable <- DT::renderDataTable({
+        data_row() %>%
+          dplyr::select(all_of(select_cols)) %>%
+          DT::datatable(options = list(dom='t',
+                                       ordering=F),
+                        colnames = col_labels,
+                        rownames=FALSE,
+                        class = list(stripe = FALSE),
+                        callback = DT::JS(callback))})
+    }
+    })
 }
