@@ -337,6 +337,7 @@ networkCompletenessServer <- function(id,
               }
             } else {
               data_select <- data.frame()
+              html_cap <- NULL
             }
         output$NCSelect <- shiny::renderTable({data_select},
                                               sanitize.text.function=function(x){x},
