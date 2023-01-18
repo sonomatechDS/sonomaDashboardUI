@@ -242,6 +242,7 @@ networkCompletenessServer <- function(id,
                              size = 5) +
             ggplot2::scale_color_manual(values = color_vals_plot) +
             ggplot2::scale_shape_manual(values = shape_vals_plot) +
+            ggplot2::scale_x_continuous(labels = function(x) sprintf("%.0f", x)) +
                     theme_sonoma() +
             ggplot2::theme(legend.position = 'bottom', legend.box='horizontal') +
             ggplot2::guides(shape = guide_legend(nrow=3,
