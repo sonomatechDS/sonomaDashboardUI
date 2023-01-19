@@ -70,12 +70,12 @@ timeseriesServer <- function(id,
                                       'shiny::reactive({}) in function call.'))
   shiny::moduleServer(id,
                       function(input, output, session) {
-                        
+
                         # Set Range of x/y axes, incorporating brushed range
-                        brush_range <- shiny::reactiveValues(x = NULL, 
-                                                             y = NULL, 
+                        brush_range <- shiny::reactiveValues(x = NULL,
+                                                             y = NULL,
                                                              brush = NULL)
-                        
+
                         param_range <- shiny::reactiveValues(min_x = NULL,
                                                              max_x = NULL,
                                                              min_y = NULL,
@@ -86,22 +86,22 @@ timeseriesServer <- function(id,
                           param_range$max_x <- max(data_param1_rct()[[x]],
                                   ifelse(!is.null(sec_param_rct()), data_param2_rct()[[x]], NA),
                                   na.rm=TRUE)
-                          
+
                           param_range$min_x <- min(data_param1_rct()[[x]],
                                   ifelse(!is.null(sec_param_rct()), data_param2_rct()[[x]], NA),
                                   na.rm=TRUE)
-                          
+
                           # Only include primary parameter in y-range consideration
                           # to account for axis multiplier for 2nd axis.
                           param_range$max_y <- max(data_param1_rct()[[y]],
                                   # ifelse(!is.null(sec_param_rct()), data_param2_rct()[[y]], NA),
                                   na.rm=TRUE)
-                          
+
                             param_range$min_y <- min(data_param1_rct()[[y]],
                                   # ifelse(!is.null(sec_param_rct()), data_param2_rct()[[y]], NA),
                                   na.rm=TRUE)
                         })
-                        
+
                         # Update brush range on double click if area is brushed
                         shiny::observeEvent(input$TSDoubleclick, {
                           brush <- input$TSBrush
@@ -116,12 +116,12 @@ timeseriesServer <- function(id,
                             brush_range$brush <- NULL
                           }
                         })
-                        
+
                         # Listen for parameter change
                         param_change <- shiny::reactive({
                           list(param_rct(),sec_param_rct())
                         })
-                        
+
                         # Reset brush range if parameters change
                         shiny::observeEvent(param_change(), {
                           req(param_range$max_x)
@@ -129,8 +129,8 @@ timeseriesServer <- function(id,
                           brush_range$y <- c(param_range$min_y, param_range$max_y)
                           brush_range$brush <- NULL
                         })
-                        
-                        
+
+
                         # Unit label for primary parameter
                         unit1 <- shiny::reactive({
                           shiny::req(is.data.frame(data_param1_rct()))
@@ -142,21 +142,21 @@ timeseriesServer <- function(id,
                                              '~`in`~',
                                              unit_to_expression(unit1()))
                           })
-                        
+
                           axis_lab_2 <- shiny::reactive({
                             shiny::req(data_param2_rct())
                             paste0(param_to_expression(sec_param_rct()),
                                                '~`in`~',
                                                unit_to_expression(unique(data_param2_rct()[[unit_col]])))
                           })
-                          
+
 
                         output$Timeseries <- shiny::renderPlot({
-                          
+
                           shiny::req(is.data.frame(data_param1_rct()),
                                      class(param_rct())=='character',
                                      param_rct() != ' - ')
-                          
+
                           if (!is.null(sec_param_rct())){
                             req(axis_lab_2(), data_param2_rct())
                             # Establish multiplier for second axis
