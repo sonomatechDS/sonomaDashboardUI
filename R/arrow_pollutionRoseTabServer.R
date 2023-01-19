@@ -1,4 +1,4 @@
-#' Pollution rose tab UI
+#' Pollution rose tab Server
 #'
 #' Used alongside pollutionRoseTabUI() to add a collection of reactive
 #' elements to an app, including multiselects for seasons and years, a select
@@ -6,7 +6,7 @@
 #' four specified parameters.
 #'
 #' @param id string ID used to link pollutionRoseTabUI() to pollutionRoseTabServer()
-#' @param input_data_ds dataset Arrow dataset object, created with arrow::open_dataset()
+#' @param ds_uri string uri to Arrow dataset, formatted as .parquet
 #' @param datetime_col string Name of column with datetime values in posixct format
 #' @param site_year dataframe Dataframe with distinct combinations of AQS sitecode and year
 #' @param map_data reactive data.frame Dataframe with lat and lng columns
@@ -86,11 +86,12 @@
 #' @importFrom grid unit
 #' @importFrom shinyWidgets updatePickerInput
 #' @importFrom lubridate month year wday hour
+#' @importFrom shinybusy show_modal_spinner remove_modal_spinner
 #' @export
 #'
 #' @examples
 arrow_pollutionRoseTabServer <- function(id,
-                                input_data_ds,
+                                ds_uri,
                                 datetime_col,
                                 site_year,
                                 map_data,
@@ -177,34 +178,37 @@ arrow_pollutionRoseTabServer <- function(id,
 
       site_data <- shiny::reactive({
         shiny::req(site_rct())
-        
+        shinybusy::show_modal_spinner(text = 'Querying Database', spin = 'fading-circle', color = '#0C53AF')
+
+        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
+
         s <- as.integer(site_rct())
-        
+
         # Start with available wind data for site
-        data <- input_data_ds %>%
+        data <- ds %>%
           filter(!!sym(site_col) == s,
                  !!sym(sample_dur_col) == sample_dur,
                  !!sym(param_col) == wd_param_name) %>%
           rename(!!dplyr::sym(wd_param_name) := !!dplyr::sym(sample_measurement_col)) %>%
           select(all_of(c(site_col, wd_param_name, datetime_col, year_col)))
-        
+
         # Join each called parameter as a new column
         p_list <- c(param1, param2, param3, param4)
-        
+
         for (p in p_list[!is.null(p_list)]) {
-        i <- input_data_ds %>%
-          dplyr::filter(!!sym(site_col) == s,
-                        !!sym(sample_dur_col) == sample_dur,
-                        !!sym(param_col) == p) %>%
-          rename(!!dplyr::sym(p) := !!dplyr::sym(sample_measurement_col)) %>%
-          select(all_of(c(site_col, p, datetime_col, year_col)))
-        
-        data <- data %>%
-          left_join(i, by = c(site_col, datetime_col, year_col))
+          i <- ds %>%
+            dplyr::filter(!!sym(site_col) == s,
+                          !!sym(sample_dur_col) == sample_dur,
+                          !!sym(param_col) == p) %>%
+            rename(!!dplyr::sym(p) := !!dplyr::sym(sample_measurement_col)) %>%
+            select(all_of(c(site_col, p, datetime_col, year_col)))
+
+          data <- data %>%
+            left_join(i, by = c(site_col, datetime_col, year_col))
         }
         collected <- data %>% dplyr::collect()
-        
-        
+
+
         if (season_filter) {
           collected <- collected %>%
             mutate(month = lubridate::month(!!dplyr::sym(datetime_col))) %>%
@@ -225,18 +229,20 @@ arrow_pollutionRoseTabServer <- function(id,
           collected <- collected %>%
             mutate(hr = lubridate::hour(!!dplyr::sym(datetime_col)))
         }
-        
+
         collected$WS <- 10
-  
+
+        remove_modal_spinner()
+
         return(collected)
       })
-      
+
       # filter site data by dropdown menu inputs
       filt_data <- shiny::reactive({
         req(site_data())
-        
+
         plot_data <- site_data()
-  
+
         if (season_filter) {
           plot_data <- plot_data %>%
             dplyr::filter(season %in% filters$seasons)
@@ -253,21 +259,21 @@ arrow_pollutionRoseTabServer <- function(id,
             dplyr::filter(dow %in% filters$dow)
         }
         if (hour_filter) {
-         
+
           plot_data <- plot_data %>%
             dplyr::filter(hr %in% filters$hours)
         }
 
         return(plot_data)
       })
-      
+
       output$windAvailabilityNotice <- renderText({
         req(site_data())
-        
+
         wdat <- site_data() %>%
           select(!!sym(wd_param_name), !!sym(datetime_col)) %>%
           filter(!is.na(!!sym(wd_param_name)))
-        
+
         max_d <- format(max(wdat[[datetime_col]], na.rm=T), '%Y-%m-%d')
         min_d <- format(min(wdat[[datetime_col]], na.rm=T), '%Y-%m-%d')
         wa_text <- paste('Wind data is available from', min_d,'through', max_d)
@@ -277,20 +283,20 @@ arrow_pollutionRoseTabServer <- function(id,
 
       output$PollutionRose1 <- shiny::renderPlot({
         shiny::req(is.data.frame(filt_data()))
-        
+
         plot_data <- filt_data() %>% drop_na(!!sym(param1))
-        
+
         shiny::validate(
           shiny::need(nrow(plot_data) > 0,
                       message = paste('Insuffcient parameter data at selected site to',
                                       'display pollution rose.')))
-        
+
         shiny::validate(
           shiny::need(nrow(plot_data %>%
                              filter(!is.na(!!dplyr::sym(wd_param_name)))) > 0,
                       message = paste('Insuffcient wind data at selected site to',
                                       'display pollution rose.')))
-        
+
         if (is.null(breaks_conc_1)) {
           minRose <- min(filt_data()[param1], na.rm = T)
           maxRose <- max(filt_data()[param1], na.rm = T)
@@ -312,7 +318,7 @@ arrow_pollutionRoseTabServer <- function(id,
                     aqipalette$maroonHazardous)
         }
 
-        # browser()       
+        # browser()
         openair::pollutionRose(mydata = filt_data(),
                                wd = wd_param_name,
                                ws = 'WS',
@@ -331,26 +337,26 @@ arrow_pollutionRoseTabServer <- function(id,
 
       output$PollutionRose2 <- shiny::renderPlot({
         shiny::req(is.data.frame(filt_data()))
-        
+
         plot_data <- filt_data() %>% drop_na(!!sym(param2))
-        
+
         shiny::validate(
           shiny::need(nrow(plot_data) > 0,
                       message = paste('Insuffcient parameter data at selected site to',
                                       'display pollution rose.')))
-        
+
         shiny::validate(
           shiny::need(nrow(plot_data %>%
                              filter(!is.na(!!dplyr::sym(wd_param_name)))) > 0,
                       message = paste('Insuffcient wind data at selected site to',
                                       'display pollution rose.')))
-        
+
         if (is.null(breaks_conc_2)) {
           minRose <- min(filt_data()[param2], na.rm = T)
           maxRose <- max(filt_data()[param2], na.rm = T)
           breaks_conc_2 <- seq(from = minRose, to = maxRose, length.out = 6)
         }
-        
+
         if(filters$aqi_conc == 'Concentrations'){
           breaks_2 <- breaks_conc_2
           cols <- viridis::magma(length(breaks_2))
@@ -365,8 +371,8 @@ arrow_pollutionRoseTabServer <- function(id,
                     aqipalette$purpleVeryUnhealthy,
                     aqipalette$maroonHazardous)
         }
-        
-        
+
+
         openair::pollutionRose(mydata = filt_data(),
                                wd = wd_param_name,
                                ws = 'WS',
@@ -381,29 +387,29 @@ arrow_pollutionRoseTabServer <- function(id,
                                key.footer = parse(text = paste(unit_str_2)),
                                main = parse(text = title_2()))
       })
-      
+
       output$PollutionRose3 <- shiny::renderPlot({
         shiny::req(is.data.frame(filt_data()))
-        
+
         plot_data <- filt_data() %>% drop_na(!!sym(param3))
-        
+
         shiny::validate(
           shiny::need(nrow(plot_data) > 0,
                       message = paste('Insuffcient parameter data at selected site to',
                                       'display pollution rose.')))
-        
+
         shiny::validate(
           shiny::need(nrow(plot_data %>%
                              filter(!is.na(!!dplyr::sym(wd_param_name)))) > 0,
                       message = paste('Insuffcient wind data at selected site to',
                                       'display pollution rose.')))
-        
+
         if (is.null(breaks_conc_3)) {
           minRose <- min(filt_data()[param3], na.rm = T)
           maxRose <- max(filt_data()[param3], na.rm = T)
           breaks_conc_3 <- seq(from = minRose, to = maxRose, length.out = 6)
         }
-        
+
         if(filters$aqi_conc == 'Concentrations'){
           breaks_3 <- breaks_conc_3
           cols <- viridis::magma(length(breaks_3))
@@ -418,8 +424,8 @@ arrow_pollutionRoseTabServer <- function(id,
                     aqipalette$purpleVeryUnhealthy,
                     aqipalette$maroonHazardous)
         }
-        
-        
+
+
         openair::pollutionRose(mydata = filt_data(),
                                wd = wd_param_name,
                                ws = 'WS',
@@ -434,29 +440,29 @@ arrow_pollutionRoseTabServer <- function(id,
                                key.footer = parse(text = paste(unit_str_3)),
                                main = parse(text = title_3()))
       })
-      
+
       output$PollutionRose4 <- shiny::renderPlot({
         shiny::req(is.data.frame(filt_data()))
-        
+
         plot_data <- filt_data() %>% drop_na(!!sym(param4))
-        
+
         shiny::validate(
           shiny::need(nrow(plot_data) > 0,
                       message = paste('Insuffcient parameter data at selected site to',
                                       'display pollution rose.')))
-        
+
         shiny::validate(
           shiny::need(nrow(plot_data %>%
                              filter(!is.na(!!dplyr::sym(wd_param_name)))) > 0,
                       message = paste('Insuffcient wind data at selected site to',
                                       'display pollution rose.')))
-        
+
         if (is.null(breaks_conc_4)) {
           minRose <- min(filt_data()[param4], na.rm = T)
           maxRose <- max(filt_data()[param4], na.rm = T)
           breaks_conc_4 <- seq(from = minRose, to = maxRose, length.out = 6)
         }
-        
+
         if(filters$aqi_conc == 'Concentrations'){
           breaks_4 <- breaks_conc_4
           cols <- viridis::magma(length(breaks_4))
@@ -471,8 +477,8 @@ arrow_pollutionRoseTabServer <- function(id,
                     aqipalette$purpleVeryUnhealthy,
                     aqipalette$maroonHazardous)
         }
-        
-        
+
+
         openair::pollutionRose(mydata = filt_data(),
                                wd = wd_param_name,
                                ws = 'WS',

@@ -2,11 +2,11 @@
 % Please edit documentation in R/arrow_pollutionRoseTabServer.R
 \name{arrow_pollutionRoseTabServer}
 \alias{arrow_pollutionRoseTabServer}
-\title{Pollution rose tab UI}
+\title{Pollution rose tab Server}
 \usage{
 arrow_pollutionRoseTabServer(
   id,
-  input_data_ds,
+  ds_uri,
   datetime_col,
   site_year,
   map_data,
@@ -56,7 +56,7 @@ arrow_pollutionRoseTabServer(
 \arguments{
 \item{id}{string ID used to link pollutionRoseTabUI() to pollutionRoseTabServer()}
 
-\item{input_data_ds}{dataset Arrow dataset object, created with arrow::open_dataset()}
+\item{ds_uri}{string uri to Arrow dataset, formatted as .parquet}
 
 \item{datetime_col}{string Name of column with datetime values in posixct format}
 

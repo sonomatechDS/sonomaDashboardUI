@@ -7,8 +7,8 @@
 #' Data input is an arrow dataset.
 #'
 #' @param id string ID the connects timeseriesInvestigationTabUI() to timeseriesInvestigationTabServer()
+#' @param ds_uri string uri to Arrow dataset, formatted as .parquet
 #' @param selected_site_rct reactive string Selected AQS Sitecode
-#' @param ds dataset Arrow dataset object, created with arrow::open_dataset()
 #' @param site_dur_param_poc dataframe dataframe with unique combinations of
 #'                                     aqs_sitecode, sample_duration, parameter,
 #'                                     poc (with these column names)
@@ -20,6 +20,8 @@
 #' @param poc_col string Name of column with POC values
 #' @param wd_param_name string Parameter name for wind direction values
 #' @param site_col string Name of column with aqs sitecodes
+#' @param tabvalue string title of the TSITab Tab
+#' @param tabsetpanel_input reactive input of the tabsetPanel id (e.g. reactive({input$tabs}))
 #' @param linesize numeric (Optional) size of line on timeseries, default = 0.75.
 #' @param pointsize numeric (Optional) size of point on timeseries, default = 3.
 #'
@@ -29,11 +31,12 @@
 #' @importFrom tidyr unite
 #' @importFrom magrittr `%>%`
 #' @importFrom shinyjs showElement hideElement
+#' @importFrom shinybusy show_modal_spinner remove_modal_spinner
 #' @export
 #'
 #' @examples
 arrow_timeseriesInvestigationTabServer <- function(id,
-                                             ds,
+                                             ds_uri,
                                              selected_site_rct,
                                              site_dur_param_poc,
                                              dt_col,
@@ -44,8 +47,11 @@ arrow_timeseriesInvestigationTabServer <- function(id,
                                              poc_col,
                                              wd_param_name,
                                              site_col,
+                                             tabvalue,
+                                             tabsetpanel_input,
                                              linesize = .75,
-                                             pointsize=2
+                                             pointsize=2,
+                                             tabsetpanel_id = 'tabs'
                                              ) {
   shiny::moduleServer(id, {
     function(input, output, session) {
@@ -58,7 +64,7 @@ arrow_timeseriesInvestigationTabServer <- function(id,
                                    sec_dur = 'None',
                                    duration_list = NULL)
 
-      shiny::observeEvent(selected_site_rct(),{
+      shiny::observe({
         shiny::req(selected_site_rct())
         # Determine available sample durations and set choices for primary duration menu
         # Default to '1 HOUR; -- should be first in sort()
@@ -69,8 +75,8 @@ arrow_timeseriesInvestigationTabServer <- function(id,
           sort()
 
         shiny::updateSelectInput(session, "TSPrimaryDur",
-                                choices = durs,
-                                selected = durs[1])
+                                 choices = durs,
+                                 selected = durs[1])
 
         # Determine available parameters and set choices for primary parameter menu
         p_params <- site_dur_param_poc %>%
@@ -80,14 +86,14 @@ arrow_timeseriesInvestigationTabServer <- function(id,
           unique()
 
         shiny::updateSelectInput(session, "TSPrimaryParam",
-                          choices = p_params,
-                          selected = p_params[1])
+                                 choices = p_params,
+                                 selected = p_params[3])
 
         # Determine available pocs and set choices for primary poc menu
         p_pocs <- site_dur_param_poc %>%
-          dplyr::filter(!!dplyr::sym(param_col) == p_params[1],
-                 !!dplyr::sym(site_col) == selected_site_rct(),
-                 !!dplyr::sym(sampledur_col) == durs[1]) %>%
+          dplyr::filter(!!dplyr::sym(param_col) == p_params[3],
+                        !!dplyr::sym(site_col) == selected_site_rct(),
+                        !!dplyr::sym(sampledur_col) == durs[1]) %>%
           dplyr::pull(poc_col) %>%
           sort() %>%
           unique()
@@ -106,7 +112,7 @@ arrow_timeseriesInvestigationTabServer <- function(id,
                                   selected = 'None')
 
         selections$p_dur <- durs[1]
-        selections$primary <- p_params[1]
+        selections$primary <- p_params[3]
         selections$sec_dur <- 'None'
         selections$p_poc <- min(p_pocs)
       })
@@ -123,7 +129,7 @@ arrow_timeseriesInvestigationTabServer <- function(id,
 
         shiny::updateSelectInput(session, "TSPrimaryParam",
                                  choices = p_params,
-                                 selected = p_params[1])
+                                 selected = p_params[3])
       })
 
       # Update poc choices if primary duration or parameter selection changes
@@ -131,8 +137,8 @@ arrow_timeseriesInvestigationTabServer <- function(id,
         req(selected_site_rct(), input$TSPrimaryParam, input$TSPrimaryDur)
         p_pocs <- site_dur_param_poc %>%
           dplyr::filter(!!dplyr::sym(param_col) == input$TSPrimaryParam,
-                 !!dplyr::sym(site_col) == selected_site_rct(),
-                 !!dplyr::sym(sampledur_col) == input$TSPrimaryDur) %>%
+                        !!dplyr::sym(site_col) == selected_site_rct(),
+                        !!dplyr::sym(sampledur_col) == input$TSPrimaryDur) %>%
           dplyr::pull(poc_col) %>%
           sort() %>%
           unique()
@@ -144,8 +150,8 @@ arrow_timeseriesInvestigationTabServer <- function(id,
 
       # Update options for secondary parameter/poc if radio button != None
       # Update "Select a second parameter" list on TS tab based on selected duration
-      shiny::observeEvent(c(input$TSSecondaryDur, selected_site_rct()), {
-        shiny::req(selected_site_rct())
+      shiny::observe({
+        shiny::req(selected_site_rct(), input$TSSecondaryDur)
         if (input$TSSecondaryDur != 'None') {
           plist_filt <- site_dur_param_poc %>%
             filter(!!dplyr::sym(sampledur_col) == input$TSSecondaryDur,
@@ -195,8 +201,8 @@ arrow_timeseriesInvestigationTabServer <- function(id,
 
         s_pocs <- site_dur_param_poc %>%
           dplyr::filter(!!dplyr::sym(sampledur_col) %in% input$TSSecondaryDur,
-                 !!dplyr::sym(param_col) == input$TSSecondaryParam,
-                 !!dplyr::sym(site_col) == selected_site_rct()) %>%
+                        !!dplyr::sym(param_col) == input$TSSecondaryParam,
+                        !!dplyr::sym(site_col) == selected_site_rct()) %>%
           dplyr::pull(poc_col) %>%
           sort() %>%
           unique()
@@ -224,12 +230,14 @@ arrow_timeseriesInvestigationTabServer <- function(id,
       })
 
       filter_param1_data <- shiny::reactive({
-        req(selected_site_rct(), selections$primary, selections$p_poc)
+        req(selected_site_rct(), selections$primary, selections$p_poc, tabsetpanel_input() == tabvalue)
 
         f1 <- selections$p_dur
         f2 <- selections$primary
         f3 <- as.integer(selected_site_rct())
         f4 <- as.integer(selections$p_poc)
+        shinybusy::show_modal_spinner(text = 'Querying Database', spin = 'fading-circle', color = '#0C53AF')
+        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
 
         filter_param1_data <- ds %>%
           dplyr::filter(!!dplyr::sym(sampledur_col) == f1,
@@ -240,9 +248,10 @@ arrow_timeseriesInvestigationTabServer <- function(id,
 
         filter_param1_data <- filter_param1_data %>%
           tidyr::unite('param_poc',dplyr::sym(!!param_col),
-                                         dplyr::sym(!!poc_col),
+                       dplyr::sym(!!poc_col),
                        sep = ' - ',
                        remove = F)
+        remove_modal_spinner()
 
         return(filter_param1_data)
       })
@@ -250,7 +259,9 @@ arrow_timeseriesInvestigationTabServer <- function(id,
       # Filter 24hr data based on Time Series selections
       filter_param2_data <- reactive({
 
-        shiny::req(selected_site_rct(), selections$secondary, selections$sec_dur, selections$s_poc)
+        shiny::req(selected_site_rct(), selections$secondary, selections$sec_dur, selections$s_poc, tabsetpanel_input() == tabvalue)
+        shinybusy::show_modal_spinner(text = 'Querying Database', spin = 'fading-circle', color = '#0C53AF')
+        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
 
         f1 <- selections$sec_dur
         f2 <- selections$secondary
@@ -269,12 +280,16 @@ arrow_timeseriesInvestigationTabServer <- function(id,
                        dplyr::sym(!!poc_col),
                        sep = ' - ',
                        remove = F)
+        remove_modal_spinner()
         return(filter_param2_data)
       })
 
       # Assign wind data depending on primary duration
       wind_1_data <- shiny::reactive({
         shiny::req(selected_site_rct())
+
+        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
+
         if (selections$p_dur %in% c('1 HOUR', '24 HOUR')) {
           f1 <- as.integer(selected_site_rct())
           f2 <- selections$p_dur
@@ -297,6 +312,9 @@ arrow_timeseriesInvestigationTabServer <- function(id,
       wind_2_data <- shiny::reactive({
         shiny::req(selected_site_rct(),
                    sec_param_rct())
+
+        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
+
         if (selections$sec_dur %in% c('1 HOUR', '24 HOUR')) {
           f1 <- as.integer(selected_site_rct())
           f2 <- selections$sec_dur
@@ -334,7 +352,7 @@ arrow_timeseriesInvestigationTabServer <- function(id,
           }
         }
         return(shiny::HTML(wa_text))
-        })
+      })
 
       parampoc_display <- shiny::reactive({
         if (selections$sec_dur == 'None') {

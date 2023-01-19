@@ -6,7 +6,7 @@
 \usage{
 arrow_timeseriesInvestigationTabServer(
   id,
-  ds,
+  ds_uri,
   selected_site_rct,
   site_dur_param_poc,
   dt_col,
@@ -17,14 +17,17 @@ arrow_timeseriesInvestigationTabServer(
   poc_col,
   wd_param_name,
   site_col,
+  tabvalue,
+  tabsetpanel_input,
   linesize = 0.75,
-  pointsize = 2
+  pointsize = 2,
+  tabsetpanel_id = "tabs"
 )
 }
 \arguments{
 \item{id}{string ID the connects timeseriesInvestigationTabUI() to timeseriesInvestigationTabServer()}
 
-\item{ds}{dataset Arrow dataset object, created with arrow::open_dataset()}
+\item{ds_uri}{string uri to Arrow dataset, formatted as .parquet}
 
 \item{selected_site_rct}{reactive string Selected AQS Sitecode}
 
@@ -47,6 +50,10 @@ poc (with these column names)}
 \item{wd_param_name}{string Parameter name for wind direction values}
 
 \item{site_col}{string Name of column with aqs sitecodes}
+
+\item{tabvalue}{string title of the TSITab Tab}
+
+\item{tabsetpanel_input}{reactive input of the tabsetPanel id (e.g. reactive({input$tabs}))}
 
 \item{linesize}{numeric (Optional) size of line on timeseries, default = 0.75.}
 
