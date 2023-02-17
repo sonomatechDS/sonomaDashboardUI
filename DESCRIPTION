@@ -44,4 +44,5 @@ Imports:
     shinyjs,
     lubridate,
     ggpattern,
-    shinybusy
+    shinybusy,
+    arrow (>= 11.0.0.2)

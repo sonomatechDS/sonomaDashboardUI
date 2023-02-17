@@ -50,7 +50,8 @@ arrow_pollutionRoseTabServer(
   breaks_aqi_3 = NULL,
   breaks_conc_4 = NULL,
   breaks_aqi_4 = NULL,
-  aqipalette
+  aqipalette,
+  timeout_sec = 30
 )
 }
 \arguments{
@@ -161,6 +162,9 @@ optional second parameter.}
 - aqipalette$redUnhealthy,
 - aqipalette$purpleVeryUnhealthy,
 - aqipalette$maroonHazardous}
+
+\item{timeout_sec}{numeric (Optional) default is 30, the number of
+seconds passed to request_timeout and connect_timeout when creating an arrow s3_bucket object}
 }
 \description{
 Used alongside pollutionRoseTabUI() to add a collection of reactive

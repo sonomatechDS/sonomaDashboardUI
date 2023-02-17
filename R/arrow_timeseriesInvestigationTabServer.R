@@ -24,6 +24,8 @@
 #' @param tabsetpanel_input reactive input of the tabsetPanel id (e.g. reactive({input$tabs}))
 #' @param linesize numeric (Optional) size of line on timeseries, default = 0.75.
 #' @param pointsize numeric (Optional) size of point on timeseries, default = 3.
+#' @param timeout_sec numeric (Optional) default is 30, the number of
+#'                    seconds passed to request_timeout and connect_timeout when creating an arrow s3_bucket object
 #'
 #' @return
 #' @importFrom shiny moduleServer observeEvent updateSelectInput reactive req updateRadioButtons HTML renderText
@@ -32,6 +34,7 @@
 #' @importFrom magrittr `%>%`
 #' @importFrom shinyjs showElement hideElement
 #' @importFrom shinybusy show_modal_spinner remove_modal_spinner
+#' @importFrom arrow open_dataset s3_bucket
 #' @export
 #'
 #' @examples
@@ -51,7 +54,7 @@ arrow_timeseriesInvestigationTabServer <- function(id,
                                              tabsetpanel_input,
                                              linesize = .75,
                                              pointsize=2,
-                                             tabsetpanel_id = 'tabs'
+                                             timeout_sec = 30
                                              ) {
   shiny::moduleServer(id, {
     function(input, output, session) {
@@ -237,7 +240,9 @@ arrow_timeseriesInvestigationTabServer <- function(id,
         f3 <- as.integer(selected_site_rct())
         f4 <- as.integer(selections$p_poc)
         shinybusy::show_modal_spinner(text = 'Querying Database', spin = 'fading-circle', color = '#0C53AF')
-        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
+        buk <- arrow::s3_bucket(ds_uri, connect_timeout = timeout_sec,
+                                request_timeout = timeout_sec)
+        ds <- arrow::open_dataset(buk, format = 'parquet')
 
         filter_param1_data <- ds %>%
           dplyr::filter(!!dplyr::sym(sampledur_col) == f1,
@@ -261,7 +266,9 @@ arrow_timeseriesInvestigationTabServer <- function(id,
 
         shiny::req(selected_site_rct(), selections$secondary, selections$sec_dur, selections$s_poc, tabsetpanel_input() == tabvalue)
         shinybusy::show_modal_spinner(text = 'Querying Database', spin = 'fading-circle', color = '#0C53AF')
-        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
+        buk <- arrow::s3_bucket(ds_uri, connect_timeout = timeout_sec,
+                                request_timeout = timeout_sec)
+        ds <- arrow::open_dataset(buk, format = 'parquet')
 
         f1 <- selections$sec_dur
         f2 <- selections$secondary
@@ -287,8 +294,9 @@ arrow_timeseriesInvestigationTabServer <- function(id,
       # Assign wind data depending on primary duration
       wind_1_data <- shiny::reactive({
         shiny::req(selected_site_rct())
-
-        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
+        buk <- arrow::s3_bucket(ds_uri, connect_timeout = timeout_sec,
+                                request_timeout = timeout_sec)
+        ds <- arrow::open_dataset(buk, format = 'parquet')
 
         if (selections$p_dur %in% c('1 HOUR', '24 HOUR')) {
           f1 <- as.integer(selected_site_rct())
@@ -313,7 +321,9 @@ arrow_timeseriesInvestigationTabServer <- function(id,
         shiny::req(selected_site_rct(),
                    sec_param_rct())
 
-        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
+        buk <- arrow::s3_bucket(ds_uri, connect_timeout = timeout_sec,
+                                request_timeout = timeout_sec)
+        ds <- arrow::open_dataset(buk, format = 'parquet')
 
         if (selections$sec_dur %in% c('1 HOUR', '24 HOUR')) {
           f1 <- as.integer(selected_site_rct())

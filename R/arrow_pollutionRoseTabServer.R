@@ -75,6 +75,8 @@
 #'                   - aqipalette$redUnhealthy,
 #'                   - aqipalette$purpleVeryUnhealthy,
 #'                   - aqipalette$maroonHazardous
+#' @param timeout_sec numeric (Optional) default is 30, the number of
+#'                    seconds passed to request_timeout and connect_timeout when creating an arrow s3_bucket object
 #'
 #' @return
 #' @importFrom shiny moduleServer reactive renderPlot reactiveValues observeEvent req validate need renderText
@@ -87,6 +89,7 @@
 #' @importFrom shinyWidgets updatePickerInput
 #' @importFrom lubridate month year wday hour
 #' @importFrom shinybusy show_modal_spinner remove_modal_spinner
+#' @importFrom arrow open_dataset s3_bucket
 #' @export
 #'
 #' @examples
@@ -127,7 +130,8 @@ arrow_pollutionRoseTabServer <- function(id,
                                 breaks_aqi_3 = NULL,
                                 breaks_conc_4 = NULL,
                                 breaks_aqi_4 = NULL,
-                                aqipalette) {
+                                aqipalette,
+                                timeout_sec = 30) {
   shiny::moduleServer(id, {
     function(input, output, session) {
       filters <- shiny::reactiveValues(years = "",
@@ -180,7 +184,9 @@ arrow_pollutionRoseTabServer <- function(id,
         shiny::req(site_rct())
         shinybusy::show_modal_spinner(text = 'Querying Database', spin = 'fading-circle', color = '#0C53AF')
 
-        ds <- arrow::open_dataset(ds_uri, format = 'parquet')
+        buk <- arrow::s3_bucket(ds_uri, connect_timeout = timeout_sec,
+                                request_timeout = timeout_sec)
+        ds <- arrow::open_dataset(buk, format = 'parquet')
 
         s <- as.integer(site_rct())
 

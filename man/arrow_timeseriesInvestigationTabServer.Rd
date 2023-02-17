@@ -21,7 +21,7 @@ arrow_timeseriesInvestigationTabServer(
   tabsetpanel_input,
   linesize = 0.75,
   pointsize = 2,
-  tabsetpanel_id = "tabs"
+  timeout_sec = 30
 )
 }
 \arguments{
@@ -58,6 +58,9 @@ poc (with these column names)}
 \item{linesize}{numeric (Optional) size of line on timeseries, default = 0.75.}
 
 \item{pointsize}{numeric (Optional) size of point on timeseries, default = 3.}
+
+\item{timeout_sec}{numeric (Optional) default is 30, the number of
+seconds passed to request_timeout and connect_timeout when creating an arrow s3_bucket object}
 }
 \description{
 Used alongside timeseriesInvestigationTabUI() to add a collection of
