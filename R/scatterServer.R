@@ -21,9 +21,7 @@
 #' @param param_col string Column name of column with parameter values
 #' @param poc_col string Column name of column iwth poc number
 #' @param measurement_col string Column name of column with measurement values
-#' @param key_col string Column name of column with key values used in spread
-#'                       operation, and column affected by
-#'                       brush (e.g. datetime).
+#' @param key_col string Column name of column with datetime values in posixct format.
 #' @param unit_col string Column name of column with unit values
 #' @param param_rct reactive Parameter value to plot on x-axis
 #' @param sec_param_rct reactive Parameter value to plot on y-axis
@@ -154,7 +152,7 @@ scatterServer <- function(id,
         brush_vals <- brush()
 
         if (!is.null(brush_vals)) {
-          brush_range$x <- c(brush_vals$xmin, brush_vals$xmax)
+          brush_range$x <- as.POSIXct(c(brush_vals$xmin, brush_vals$xmax), origin = '1970-01-01')
           brush_range$y <-
             c(brush_vals$ymin, brush_vals$ymax)
         } else {

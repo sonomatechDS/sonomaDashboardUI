@@ -90,11 +90,11 @@ arrow_timeseriesInvestigationTabServer <- function(id,
 
         shiny::updateSelectInput(session, "TSPrimaryParam",
                                  choices = p_params,
-                                 selected = p_params[3])
+                                 selected = p_params[min(3, length(p_params))])
 
         # Determine available pocs and set choices for primary poc menu
         p_pocs <- site_dur_param_poc %>%
-          dplyr::filter(!!dplyr::sym(param_col) == p_params[3],
+          dplyr::filter(!!dplyr::sym(param_col) == p_params[min(3, length(p_params))],
                         !!dplyr::sym(site_col) == selected_site_rct(),
                         !!dplyr::sym(sampledur_col) == durs[1]) %>%
           dplyr::pull(poc_col) %>%
@@ -115,7 +115,7 @@ arrow_timeseriesInvestigationTabServer <- function(id,
                                   selected = 'None')
 
         selections$p_dur <- durs[1]
-        selections$primary <- p_params[3]
+        selections$primary <- p_params[min(3, length(p_params))]
         selections$sec_dur <- 'None'
         selections$p_poc <- min(p_pocs)
       })
@@ -132,7 +132,7 @@ arrow_timeseriesInvestigationTabServer <- function(id,
 
         shiny::updateSelectInput(session, "TSPrimaryParam",
                                  choices = p_params,
-                                 selected = p_params[3])
+                                 selected = p_params[min(3, length(p_params))])
       })
 
       # Update poc choices if primary duration or parameter selection changes

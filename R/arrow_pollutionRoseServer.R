@@ -24,8 +24,7 @@
 #'                                  param_col.
 #' @param measurement_col string Name of column in 1-hr concentration data with
 #'                         parameter name values.
-#' @param key_col string Name of column in 1-hr concentration and wind data with
-#'                         key values (typically datetime column).
+#' @param key_col string Name of datetime column in posixct format.
 #' @param unit_col string Name of column in 1-hr concentration data with
 #'                         unit values.
 #' @param site_col string Name of column in 1-hr concentration data with
@@ -82,9 +81,15 @@ arrow_pollutionRoseServer <- function(id,
         brush_vals <- brush()
 
         if (!is.null(brush_vals)) {
-          brush_range$x <- c(brush_vals$xmin, brush_vals$xmax)
+          brush_range$x <- as.POSIXct(c(brush_vals$xmin, brush_vals$xmax), origin = '1970-01-01')
+
+          # if ("POSIXct" %in% class(data()[[key_col]]) & !("POSIXct" %in% class(brush_range$x))) {
+          #   brush_range$x <- as.POSIXct(brush_range$x, origin = '1970-01-01', tz = "")
+          # }
+
           brush_range$y <-
             c(brush_vals$ymin, brush_vals$ymax)
+
         } else {
           brush_range$x <- NULL
           brush_range$y <- NULL
