@@ -56,7 +56,7 @@
 #' @importFrom ggplot2 ggplot geom_line aes labs geom_text theme scale_x_continuous geom_point
 #' @importFrom gghighlight gghighlight
 #' @importFrom scales pretty_breaks
-#' @importFrom dplyr filter if_else
+#' @importFrom dplyr filter
 #' @importFrom magrittr `%>%`
 #' @export
 #'
@@ -167,7 +167,7 @@ lineplotServer <- function(id,
 
           if(highlight) {
 
-            hv <- dplyr::if_else(is.null(highlight_value_rct()),
+            hv <- ifelse(is.null(highlight_value_rct()),
                                  '',
                                  highlight_value_rct())
             plot <- plot +
@@ -178,7 +178,7 @@ lineplotServer <- function(id,
                 ggplot2::aes(
                   x = Inf,
                   y = Inf,
-                  label = dplyr::if_else(is.null(highlight_value_rct()),
+                  label = ifelse(is.null(highlight_value_rct()),
                                   corner_ann,
                                   ''),
                   hjust = 1.05,
