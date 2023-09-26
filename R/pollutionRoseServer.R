@@ -85,9 +85,11 @@ pollutionRoseServer <- function(id,
         brush_vals <- brush()
 
         if (!is.null(brush_vals)) {
-          brush_range$x <- c(brush_vals$xmin, brush_vals$xmax)
+          brush_range$x <- as.POSIXct(c(brush_vals$xmin, brush_vals$xmax), origin = '1970-01-01')
+
           brush_range$y <-
             c(brush_vals$ymin, brush_vals$ymax)
+
         } else {
           brush_range$x <- NULL
           brush_range$y <- NULL
