@@ -193,7 +193,7 @@ timeseriesServer <- function(id,
                                   x = '',
                                   color = ''
                                 ) +
-                                ggplot2::scale_x_datetime() +
+                                ggplot2::scale_x_datetime(date_labels = '%m/%d\n%Y') +
                                 tidyquant::coord_x_datetime(xlim = brush_range$x,
                                                             ylim = brush_range$y,
                                                             expand = TRUE) +
@@ -235,7 +235,7 @@ timeseriesServer <- function(id,
                                   color = '',
                                   linetype = ''
                                 ) +
-                                ggplot2::scale_x_datetime() +
+                                ggplot2::scale_x_datetime(date_labels = '%m/%d\n%Y') +
                                 tidyquant::coord_x_datetime(xlim = brush_range$x,
                                                             ylim = brush_range$y,
                                                             expand = TRUE) +
@@ -281,7 +281,7 @@ timeseriesServer <- function(id,
                                                  color = sonoma_color_palette(1)[1]) +
                               ggplot2::labs(y = parse(text = axis_lab_1()),
                                             x = '') +
-                              scale_x_datetime() +
+                              scale_x_datetime(date_labels = '%m/%d\n%Y') +
                               tidyquant::coord_x_datetime(xlim = brush_range$x,
                                                           ylim = brush_range$y,
                                                           expand = TRUE) +
