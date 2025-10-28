@@ -193,10 +193,11 @@ timeseriesServer <- function(id,
                                   x = '',
                                   color = ''
                                 ) +
-                                ggplot2::scale_x_datetime(date_labels = '%m/%d\n%Y') +
+                                
                                 tidyquant::coord_x_datetime(xlim = brush_range$x,
                                                             ylim = brush_range$y,
                                                             expand = TRUE) +
+                              ggplot2::scale_x_datetime(date_labels = '%m/%d\n%Y') +
                                 ggplot2::scale_y_continuous(sec.axis = ggplot2::sec_axis(
                                   ~((.-range1[1])/s)+range2[1],
                                   name = parse(text = axis_lab_2())
@@ -235,10 +236,11 @@ timeseriesServer <- function(id,
                                   color = '',
                                   linetype = ''
                                 ) +
-                                ggplot2::scale_x_datetime(date_labels = '%m/%d\n%Y') +
+                                
                                 tidyquant::coord_x_datetime(xlim = brush_range$x,
                                                             ylim = brush_range$y,
                                                             expand = TRUE) +
+                              ggplot2::scale_x_datetime(date_labels = '%m/%d\n%Y') +
                                 ggplot2::geom_line(
                                   data = data_param2_rct(),
                                   ggplot2::aes(
@@ -281,10 +283,11 @@ timeseriesServer <- function(id,
                                                  color = sonoma_color_palette(1)[1]) +
                               ggplot2::labs(y = parse(text = axis_lab_1()),
                                             x = '') +
-                              scale_x_datetime(date_labels = '%m/%d\n%Y') +
+                              
                               tidyquant::coord_x_datetime(xlim = brush_range$x,
                                                           ylim = brush_range$y,
                                                           expand = TRUE) +
+                            scale_x_datetime(date_labels = '%m/%d\n%Y') +
                               theme_sonoma()
                           }
 
